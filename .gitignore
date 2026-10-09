@@ -1,4 +1,6 @@
 # Python virtual environment
+venv/
+.venv/
 venv_fastapi_gcp_pro/
 __pycache__/
 *.pyc
