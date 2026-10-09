@@ -39,6 +39,7 @@ function SidebarConfig() {
           <option value="anthropic">Claude 4 (Latest)</option>
           <option value="openai">GPT-5 (Latest)</option>
           <option value="kimi">Kimi K2 0905 Preview</option>
+          <option value="groq">Groq (Llama 3.3 70B Fast)</option>
         </select>
       </div>
 
@@ -51,7 +52,7 @@ function SidebarConfig() {
           type="password"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
-          placeholder="Enter your API key..."
+          placeholder={selectedModel === 'groq' ? "Enter your Groq API key (gsk_...)" : "Enter your API key..."}
           className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
           disabled={isStreaming}
         />

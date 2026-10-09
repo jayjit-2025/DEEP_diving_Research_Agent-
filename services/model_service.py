@@ -64,6 +64,22 @@ class ModelService:
                     "coding_assistance"
                 ],
                 max_tokens=128000
+            ),
+            "groq": AvailableModel(
+                id="groq",
+                name="Groq Llama 3.3 70B (Fast)",
+                provider="Groq",
+                description="Ultra-fast open reasoning model powered by Groq LPUs (128k context)",
+                capabilities=[
+                    "web_search",
+                    "document_analysis",
+                    "code_analysis",
+                    "multi-step_reasoning",
+                    "structured_output",
+                    "tool_calling",
+                    "ultra_fast_speed"
+                ],
+                max_tokens=128000
             )
         }
     
@@ -78,7 +94,7 @@ class ModelService:
             return {
                 "models": list(self._models.values()),
                 "total_count": len(self._models),
-                "supported_providers": ["OpenAI", "Anthropic", "Moonshot AI"]
+                "supported_providers": ["OpenAI", "Anthropic", "Moonshot AI", "Groq"]
             }
         except Exception as e:
             logger.error(f"Error getting available models: {str(e)}")
@@ -123,7 +139,9 @@ class ModelService:
             # Claude 3.5 Sonnet - current stable model
             "anthropic": "claude-sonnet-4-20250514",
             # Moonshot Kimi K2 0905 preview via Anthropic-compatible endpoint
-            "kimi": "kimi-k2-0905-preview"
+            "kimi": "kimi-k2-0905-preview",
+            # Groq Llama 3.3 70B Versatile
+            "groq": "llama-3.3-70b-versatile"
         }
     
     def get_api_key_env_var(self, model_id: str) -> Optional[str]:
@@ -139,6 +157,7 @@ class ModelService:
         env_vars = {
             "openai": "OPENAI_API_KEY",
             "anthropic": "ANTHROPIC_API_KEY", 
-            "kimi": "ANTHROPIC_API_KEY"  # Kimi uses Anthropic-compatible API key
+            "kimi": "ANTHROPIC_API_KEY",  # Kimi uses Anthropic-compatible API key
+            "groq": "GROQ_API_KEY"
         }
         return env_vars.get(model_id)

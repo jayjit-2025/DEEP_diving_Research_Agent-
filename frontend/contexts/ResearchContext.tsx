@@ -36,6 +36,7 @@ interface ApiKeys {
   openai: string
   anthropic: string
   kimi: string
+  groq: string
 }
 
 interface ResearchState {
@@ -90,7 +91,7 @@ export const ResearchProvider = ({ children }: { children: ReactNode }) => {
         console.warn('Failed to load API keys from localStorage:', error)
       }
     }
-    return { openai: '', anthropic: '', kimi: '' }
+    return { openai: '', anthropic: '', kimi: '', groq: '' }
   })
 
   // API key management functions
@@ -114,7 +115,7 @@ export const ResearchProvider = ({ children }: { children: ReactNode }) => {
   }
   
   const clearApiKeys = () => {
-    const emptyKeys = { openai: '', anthropic: '', kimi: '' }
+    const emptyKeys = { openai: '', anthropic: '', kimi: '', groq: '' }
     setApiKeysState(emptyKeys)
     setApiKey('')
     

@@ -81,7 +81,7 @@ const ModelComparison = () => {
   
   // Multi-model comparison state
   const [query, setQuery] = useState('')
-  const [selectedModels, setSelectedModels] = useState<string[]>(['anthropic', 'openai', 'kimi'])
+  const [selectedModels, setSelectedModels] = useState<string[]>(['anthropic', 'openai', 'kimi', 'groq'])
   const [isRunning, setIsRunning] = useState(false)
   const [latestSession, setLatestSession] = useState<ComparisonSession | null>(null)
   const [selectedResult, setSelectedResult] = useState<ComparisonResult | null>(null)
@@ -97,7 +97,8 @@ const ModelComparison = () => {
   const availableModels = [
     { id: 'anthropic', name: 'Claude 4', description: 'Latest Anthropic Claude 4' },
     { id: 'openai', name: 'GPT-5', description: 'OpenAI\'s newest flagship model' },
-    { id: 'kimi', name: 'Kimi K2 0905 Preview', description: 'Kimi K2 0905 via Moonshot' }
+    { id: 'kimi', name: 'Kimi K2 0905 Preview', description: 'Kimi K2 0905 via Moonshot' },
+    { id: 'groq', name: 'Groq Llama 3.3 70B', description: 'Ultra-fast LPU inference via console.groq.com' }
   ]
 
   useEffect(() => {
@@ -256,7 +257,7 @@ const ModelComparison = () => {
     reader.onload = (e) => {
       try {
         const keys = JSON.parse(e.target?.result as string)
-        if (keys.openai !== undefined || keys.anthropic !== undefined || keys.kimi !== undefined) {
+        if (keys.openai !== undefined || keys.anthropic !== undefined || keys.kimi !== undefined || keys.groq !== undefined) {
           setApiKeys(keys)
           setError(null)
         } else {
@@ -302,7 +303,7 @@ const ModelComparison = () => {
             <Key className="w-5 h-5 text-slate-700 dark:text-slate-300" />
             <h3 className="text-lg font-medium text-slate-900 dark:text-white">API Key Configuration</h3>
             <span className="text-sm text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">
-              {getKeysConfigured()}/3 configured
+              {getKeysConfigured()}/{availableModels.length} configured
             </span>
           </div>
           <div className="flex items-center gap-2">

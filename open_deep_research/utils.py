@@ -547,11 +547,30 @@ async def load_mcp_tools(
 # Tool Utils
 ##########################
 
+@tool
+def duckduckgo_search(query: str) -> str:
+    """Search the web for real-time information using DuckDuckGo."""
+    try:
+        from duckduckgo_search import DDGS
+        with DDGS() as ddgs:
+            results = list(ddgs.text(query, max_results=5))
+            if not results:
+                return "No search results found."
+            formatted = []
+            for r in results:
+                title = r.get("title", "")
+                link = r.get("href", "")
+                snippet = r.get("body", "")
+                formatted.append(f"Title: {title}\nURL: {link}\nSnippet: {snippet}")
+            return "\n\n".join(formatted)
+    except Exception as e:
+        return f"Error executing DuckDuckGo search: {str(e)}"
+
 async def get_search_tool(search_api: SearchAPI):
     """Configure and return search tools based on the specified API provider.
     
     Args:
-        search_api: The search API provider to use (Anthropic, OpenAI, Tavily, or None)
+        search_api: The search API provider to use (Anthropic, OpenAI, Tavily, DuckDuckGo, or None)
         
     Returns:
         List of configured search tool objects for the specified provider
@@ -578,6 +597,9 @@ async def get_search_tool(search_api: SearchAPI):
         }
         return [search_tool]
         
+    elif search_api == SearchAPI.DUCKDUCKGO:
+        return [duckduckgo_search]
+
     elif search_api == SearchAPI.NONE:
         # No search functionality configured
         return []

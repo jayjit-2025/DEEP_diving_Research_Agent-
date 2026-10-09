@@ -54,7 +54,8 @@ export function getModelDisplayName(modelId: string): string {
   const modelNames: Record<string, string> = {
     'openai': 'OpenAI GPT-5',
     'anthropic': 'Anthropic Claude 4',
-    'kimi': 'Kimi K2 0905 Preview'
+    'kimi': 'Kimi K2 0905 Preview',
+    'groq': 'Groq Llama 3.3 70B'
   }
   return modelNames[modelId] || modelId
 }
@@ -66,7 +67,8 @@ export function getModelColor(modelId: string): string {
   const modelColors: Record<string, string> = {
     'openai': 'bg-green-500',
     'anthropic': 'bg-orange-500', 
-    'kimi': 'bg-purple-500'
+    'kimi': 'bg-purple-500',
+    'groq': 'bg-amber-500'
   }
   return modelColors[modelId] || 'bg-gray-500'
 }

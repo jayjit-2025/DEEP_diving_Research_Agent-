@@ -293,15 +293,10 @@ class DeepResearchService:
                 # Set Anthropic base URL to Moonshot AI Anthropic-compatible endpoint
                 os.environ["ANTHROPIC_BASE_URL"] = "https://api.moonshot.ai/anthropic"
                 logger.info(f"Configured Kimi K2-Instruct-0905 with Anthropic-compatible API via Moonshot endpoint")
-            
-            # LEGACY: Old complex API keys system (commented out for future env variable use)
-            # api_keys = {}
-            # if model == "openai":
-            #     api_keys["OPENAI_API_KEY"] = api_key
-            # elif model == "anthropic":
-            #     api_keys["ANTHROPIC_API_KEY"] = api_key
-            # elif model == "kimi":
-            #     api_keys["ANTHROPIC_API_KEY"] = api_key
+            elif model == "groq":
+                os.environ.pop("ANTHROPIC_BASE_URL", None)
+                os.environ["GROQ_API_KEY"] = api_key
+                logger.info("Configured Groq Llama 3.3 70B with Groq API")
             
             # For Kimi, we need to specify the model provider explicitly
             model_provider = None
@@ -311,7 +306,12 @@ class DeepResearchService:
                 model_provider = "openai"
             elif model == "anthropic":
                 model_provider = "anthropic"
+            elif model == "groq":
+                model_provider = "groq"
             
+            # Select appropriate search API: Groq uses DuckDuckGo by default
+            search_api_name = "duckduckgo" if model == "groq" else ("openai" if model == "openai" else "anthropic")
+
             # BEST PRACTICE: Balanced configuration for production use
             # Optimized for reliability, speed, and cost-effectiveness
             config_dict = {
@@ -325,7 +325,7 @@ class DeepResearchService:
                 "summarization_model_max_tokens": 4000,
                 "allow_clarification": False,  # Skip clarification for faster results
                 "max_structured_output_retries": 2,  # Reasonable retry limit
-                "search_api": "anthropic",  # Use Anthropic search API
+                "search_api": search_api_name,  # Selected search API
                 
                 # BEST PRACTICE: Conservative limits to prevent timeouts
                 "max_researcher_iterations": 1,  # Single iteration to stay under timeout
